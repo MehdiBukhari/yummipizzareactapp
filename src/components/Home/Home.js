@@ -1,25 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { addToCart } from '../actions/cartActions'
-
+import { addToCart, productlist } from '../actions/cartActions'
+import axios from "axios";
 class Home extends Component {
 
     handleClick = (id) => {
         this.props.addToCart(id);
+        //console.log(this.props.items.length)
     }
-
+    componentDidMount(){
+            this.productlist();
+    }
+    productlist(){
+        axios.post('http://localhost:8000/api/user/food', null).then((response) => {
+            if (response.status === 200) {
+                console.log(response.data)
+                this.props.productlist(response.data)
+            }
+        })
+    }
     render() {
         let itemList = this.props.items.map(item => {
             return (
                 <div className="card" key={item.id}>
                     <div className="card-image">
-                        <img src={item.img} alt={item.title} />
-                        <span className="card-title">{item.title}</span>
+                        <img src={'http://localhost:8000/'+item.imagepath} alt={item.proname} />
+                        <span className="card-title">{item.proname}</span>
                         <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={() => { this.handleClick(item.id) }}><i className="material-icons">add</i></span>
                     </div>
 
                     <div className="card-content">
-                        <p>{item.desc}</p>
+                        <p>{item.descrpation}</p>
                         <p><b>Price: {item.price}$</b></p>
                     </div>
                 </div>
@@ -45,7 +56,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 
     return {
-        addToCart: (id) => { dispatch(addToCart(id)) }
+        addToCart: (id) => { dispatch(addToCart(id)) },
+        productlist:(products)=>{dispatch(productlist(products))}
     }
 }
 

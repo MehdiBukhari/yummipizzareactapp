@@ -26,7 +26,7 @@ class Cart extends Component {
 
                         <li className="collection-item avatar" key={item.id}>
                             <div className="item-img">
-                                <img src={item.img} alt={item.img} className="" />
+                                <img src={'http://localhost:8000/' + item.imagepath} alt={item.proname} />
                             </div>
 
                             <div className="item-desc">

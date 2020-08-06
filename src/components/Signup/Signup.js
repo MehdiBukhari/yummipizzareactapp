@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, FormGroup, Label, Input } from "reactstrap";
 import axios from "axios";
 import "./Signup.css";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 export default class Signup extends Component {
     userData;
@@ -12,11 +12,13 @@ export default class Signup extends Component {
             signupData: {
                 name: "",
                 email: "",
-                phone: "",
                 password: "",
+                password_confirmation: "",
+                "scope": "user",
                 isLoading: "",
             },
             msg: "",
+            redirect: false,
         };
     }
 
@@ -26,40 +28,53 @@ export default class Signup extends Component {
         this.setState({ signupData });
     };
     onSubmitHandler = (e) => {
-        e.preventDefault();
-        this.setState({ isLoading: true });
-        axios
-            .post("http://localhost:8000/api/user-signup", this.state.signupData)
-            .then((response) => {
-                this.setState({ isLoading: false });
-                if (response.data.status === 200) {
-                    this.setState({
-                        msg: response.data.message,
-                        signupData: {
-                            name: "",
-                            email: "",
-                            phone: "",
-                            password: "",
-                        },
-                    });
+        if (this.state.signupData.name === "" || this.state.signupData.email === "" || this.state.signupData.password === "" || this.state.signupData.password_confirmation === "") {
+            alert('All Fileds are Requried');
+        } else {
+            e.preventDefault();
+            this.setState({ isLoading: true });
+            axios
+                .post("http://localhost:8000/api/auth/signup", this.state.signupData)
+                .then((response) => {
+                    console.log(response);
+                    this.setState({ isLoading: false });
+                    if (response.data.message === 'authorized') {
+                        this.setState({
+                            msg: response.data.message,
+                            signupData: {
+                                name: "",
+                                email: "",
+                                password: "",
+                                password_confirmation: "",
+                            },
+                        });
+                        setTimeout(() => {
+                            this.setState({ msg: "", redirect: true });
+                        }, 2000);
+                        localStorage.setItem("isLoggedIn", true);
+                        localStorage.setItem("userData", JSON.stringify(response.data));
+                    }
+                    this.setState({ msg: response.data });
                     setTimeout(() => {
                         this.setState({ msg: "" });
-                    }, 2000);
-                }
+                    }, 200000);
 
-                if (response.data.status === "failed") {
-                    this.setState({ msg: response.data.message });
-                    setTimeout(() => {
-                        this.setState({ msg: "" });
-                    }, 2000);
-                }
-            });
+                });
+        }
+
     };
     render() {
         const isLoading = this.state.isLoading;
-        return (   
+        if (this.state.redirect) {
+            return <Redirect to="/cart" />;
+        }
+        const login = localStorage.getItem("isLoggedIn");
+        if (login) {
+            return <Redirect to="/cart" />;
+        }
+        return (
             <div className="row apni">
-            <h4>Registration </h4>
+                <h4>Registration </h4>
                 <form className="containers shadow">
                     <FormGroup>
                         <Label for="name">Name</Label>
@@ -69,6 +84,7 @@ export default class Signup extends Component {
                             placeholder="Enter name"
                             value={this.state.signupData.name}
                             onChange={this.onChangehandler}
+                            required={true}
                         />
                     </FormGroup>
                     <FormGroup>
@@ -82,22 +98,22 @@ export default class Signup extends Component {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Label for="phone">Phone Number</Label>
-                        <Input
-                            type="text"
-                            name="phone"
-                            placeholder="Enter phone number"
-                            value={this.state.signupData.phone}
-                            onChange={this.onChangehandler}
-                        />
-                    </FormGroup>
-                    <FormGroup>
                         <Label for="password">Password</Label>
                         <Input
                             type="password"
                             name="password"
                             placeholder="Enter password"
                             value={this.state.signupData.password}
+                            onChange={this.onChangehandler}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="password_confirmation">Confrim Password</Label>
+                        <Input
+                            type="password"
+                            name="password_confirmation"
+                            placeholder="Enter password again"
+                            value={this.state.signupData.password_confirmation}
                             onChange={this.onChangehandler}
                         />
                     </FormGroup>
@@ -121,7 +137,7 @@ export default class Signup extends Component {
                     <Link to="/sign-in" className="text-white ml-5">I'm already member</Link>
                 </form>
             </div>
-           
-       );
+
+        );
     }
 }
