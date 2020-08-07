@@ -66,7 +66,7 @@ class Signin extends Component {
 
     render() {
         if (this.state.redirect) {
-            return <Redirect to="/" />;
+            return <Redirect to="/cart" />;
         }
         const login = localStorage.getItem("isLoggedIn");
         if (login) {

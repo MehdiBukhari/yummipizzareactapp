@@ -12,10 +12,6 @@ class Dashboard extends Component {
             headers: { Authorization: 'Bearer ' + this.userdata.access_token }
         };
     }
-    handleClick = (id) => {
-        this.props.addToCart(id);
-        //console.log(this.props.items.length)
-    }
     componentDidMount() {
         this.productlist();
         this.Orderlist();
