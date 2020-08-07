@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { removeItem, addQuantity, subtractQuantity } from '../actions/cartActions'
-import Recipe from '../Recipe'
+import Recipe from '../SubmitOrders/Recipe'
 class Cart extends Component {
 
     //to remove the item completely
@@ -23,14 +23,12 @@ class Cart extends Component {
             (
                 this.props.items.map(item => {
                     return (
-
                         <li className="collection-item avatar" key={item.id}>
                             <div className="item-img">
                                 <img src={'http://localhost:8000/' + item.imagepath} alt={item.proname} />
                             </div>
-
                             <div className="item-desc">
-                                <span className="title">{item.title}</span>
+                                <span className="title">{item.proname}</span>
                                 <p>{item.desc}</p>
                                 <p><b>Price: {item.price}$</b></p>
                                 <p>

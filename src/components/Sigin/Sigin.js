@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import axios from "axios";
+import { connect } from "react-redux";
+import { login } from "../actions/cartActions";
 import { Redirect, Link } from "react-router-dom";
 
-export default class Signin extends Component {
+class Signin extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,9 +36,11 @@ export default class Signin extends Component {
             })
             .then((response) => {
                 this.setState({ isLoading: false });
-                if (response.data.status === 200) {
+                console.log(response.data)
+                if (response.status === 200) {
                     localStorage.setItem("isLoggedIn", true);
                     localStorage.setItem("userData", JSON.stringify(response.data));
+                    this.props.login();
                     this.setState({
                         msg: response.data.message,
                         redirect: true,
@@ -53,7 +57,7 @@ export default class Signin extends Component {
                     setTimeout(() => {
                         this.setState({ errMsgEmail: "", errMsgPwd: "" });
                     }, 2000);
-                } 
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -62,11 +66,11 @@ export default class Signin extends Component {
 
     render() {
         if (this.state.redirect) {
-            return <Redirect to="/home" />;
+            return <Redirect to="/" />;
         }
         const login = localStorage.getItem("isLoggedIn");
         if (login) {
-            return <Redirect to="/home" />;
+            return <Redirect to="/" />;
         }
         const isLoading = this.state.isLoading;
         return (
@@ -118,4 +122,11 @@ export default class Signin extends Component {
             </div>
         );
     }
+    
 }
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: () => { dispatch(login()) }
+    }
+}
+export default connect(null,mapDispatchToProps)(Signin);

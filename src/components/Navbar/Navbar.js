@@ -4,10 +4,15 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import axios from "axios";
 import { itemsQuantity } from "../actions/cartActions";
+import "./Navbar.css"
 class Navbar extends Component {
+    userdata
+    userscope
     constructor(props) {
         super(props)
         this.state = { menus: [] }
+        this.userdata = (localStorage.getItem('userData'))?JSON.parse(localStorage.getItem('userData')):null;
+        this.userscope=this.userdata!=null?this.userdata.scope:"/";
     }
     componentDidMount() {
         this.menulist();
@@ -15,7 +20,7 @@ class Navbar extends Component {
         M.Dropdown.init(elems, { inDuration: 300, outDuration: 225 });
 
     };
-    menulist() {      
+    menulist() {
         axios.post('http://localhost:8000/api/admin/menuitems', null).then((response) => {
             if (response.status === 200) {
                 this.props.itemsQuantity(response.data)
@@ -31,13 +36,11 @@ class Navbar extends Component {
                 )
             })
         ) :
-
             (
                 <li>Nothing.</li>
             );
         return (
-
-            <nav className="nav-wrapper">
+            <nav className="nav-wrapper apnibar">
                 <div className="container">
                     <Link to="/" className="brand-logo">Yummi Pizza</Link>
                     <ul className="right">
@@ -46,11 +49,10 @@ class Navbar extends Component {
                         <ul id="dropdown1" className="dropdown-content" >
                             {menuitems}
                         </ul>
-
                         <li><Link to="/cart">Your cart have {this.props.items.length} kinds of products </Link></li>
-                        {login ? (
+                        {this.props.loggedin ? (
                             <li><Link to="/logout">Logout</Link></li>,
-                            <li><Link to="/dasboard">My Dashboard</Link></li>
+                            <li><Link to={this.userscope ==="user" ? "userdashboard":"/dashboard"}>My Dashboard</Link></li>
 
                         ) : (
                                 <li><Link to="/sign-in">Sign-in</Link></li>
@@ -59,9 +61,8 @@ class Navbar extends Component {
                 </div>
             </nav>
         )
-
     }
-    
+
 
 }
 const mapDispatchToProps = (dispatch) => {
@@ -72,7 +73,8 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
     return {
         items: state.addedItems,
-        menuitems: state.menuitems
+        menuitems: state.menuitems,
+        loggedin: state.loggedin
     }
 }
 

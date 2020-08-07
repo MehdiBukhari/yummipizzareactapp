@@ -1,5 +1,5 @@
 
-import { ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,Get_MENU_Item,ProductList} from './action-types/cart-actions'
+import { ADD_TO_CART, REMOVE_ITEM, SUB_QUANTITY, ADD_QUANTITY, ADD_SHIPPING, Get_MENU_Item, ProductList, LOGGEDIN,SIGNOUT} from './action-types/cart-actions'
 
 //add cart action
 export const addToCart= (id)=>{
@@ -43,5 +43,18 @@ export const productlist = (produts) => {
     return {
         type: ProductList,
         produts
+    }
+    
+}
+//loggedin
+export const login =()=>{
+    return{
+        type: LOGGEDIN
+    }
+}
+//SIGNOUT
+export const sigout=()=>{
+    return{
+        type:SIGNOUT
     }
 }
