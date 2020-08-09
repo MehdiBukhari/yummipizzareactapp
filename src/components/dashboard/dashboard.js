@@ -18,7 +18,7 @@ class Dashboard extends Component {
         this.menulist();
     }
     productlist() {
-        axios.post('http://localhost:8000/api/user/food', null).then((response) => {
+        axios.post('https://yummipizzalaravel.herokuapp.com/api/user/food', null).then((response) => {
             if (response.status === 200) {
                 console.log(response.data)
                 this.setState({ Products: response.data })
@@ -27,7 +27,7 @@ class Dashboard extends Component {
     }
     Orderlist() {
         console.log(this.config)
-        axios.post('http://localhost:8000/api/admin/orders', null, this.config).then((response) => {
+        axios.post('https://yummipizzalaravel.herokuapp.com/api/admin/orders', null, this.config).then((response) => {
             if (response.status === 200) {
                 console.log(response.data)
                 this.setState({ Orders: response.data })
@@ -35,7 +35,7 @@ class Dashboard extends Component {
         })
     }
     menulist() {
-        axios.post('http://localhost:8000/api/admin/menuitems', null).then((response) => {
+        axios.post('https://yummipizzalaravel.herokuapp.com/api/admin/menuitems', null).then((response) => {
             if (response.status === 200) {
                 this.setState({ menus: response.data })
             }
@@ -48,7 +48,7 @@ class Dashboard extends Component {
                     <td>{product.id}</td>
                     <td>{product.proname}</td>
                     <td>{product.price}</td>
-                    <td><Link className="btn waves-effect waves-light " to={"/product/" + product.id}>Detail</Link></td>
+                    {/* <td><Link className="btn waves-effect waves-light " to={"/product/" + product.id}>Detail</Link></td> */}
                 </tr>
             )
         })) : (<p>Nothing</p>);
@@ -58,7 +58,7 @@ class Dashboard extends Component {
                     <td>{orde.id}</td>
                     <td>{orde.userid}</td>
                     <td>{orde.mobileNumber},{orde.adress} </td>
-                    <td><Link className="btn waves-effect waves-light " to={"/order/" + orde.id}>Detail</Link></td>
+                    {/* <td><Link className="btn waves-effect waves-light " to={"/order/" + orde.id}>Detail</Link></td> */}
                 </tr>
             )
         })) : (<p>Nothing</p>);
@@ -73,12 +73,12 @@ class Dashboard extends Component {
         return (
             <div>
                 <div className="row">
-                <div className="contanier">
+                    <div className="contanier">
                         <h5 className="center"> Yummi Pizza Store Area</h5>
                         <td><Link className="btn waves-effect waves-light " to="/create-menu">Create Menu</Link></td>
-                        <td><Link className="btn waves-effect waves-light " to="/create-product">Create Product</Link></td> 
-                </div>
-                    
+                        <td><Link className="btn waves-effect waves-light " to="/create-product">Create Product</Link></td>
+                    </div>
+
                 </div>
                 <div className="row">
                     <div className="col s2 offset-2">
@@ -105,7 +105,7 @@ class Dashboard extends Component {
                                     <th>ORdNo</th>
                                     <th>CUSID</th>
                                     <th>Customer Adress</th>
-                                    <th>Actions</th>
+                                    {/* <th>Actions</th> */}
                                 </tr>
                             </thead>
 
@@ -125,7 +125,7 @@ class Dashboard extends Component {
                                     <th>SNO</th>
                                     <th>Product Name</th>
                                     <th>Product Price</th>
-                                    <th>Actions</th>
+                                    {/* <th>Actions</th> */}
                                 </tr>
                             </thead>
 
@@ -134,7 +134,7 @@ class Dashboard extends Component {
                             </tbody>
                         </table>
                     </div>
-                    
+
                 </div>
             </div>
         )

@@ -12,25 +12,25 @@ class logout extends Component {
     userdata
     constructor() {
         super()
-        this.userdata=JSON.parse(localStorage.getItem('userData'));
+        this.userdata = JSON.parse(localStorage.getItem('userData'));
         this.config = {
-            headers: { Authorization: 'Bearer '+this.userdata.access_token }
+            headers: { Authorization: 'Bearer ' + this.userdata.access_token }
         };
     }
-    componentDidMount(){
+    componentDidMount() {
         this.logout();
     }
-    logout(){
+    logout() {
         console.log(this.config)
-            axios.get('http://localhost:8000/api/auth/logout',this.config).then((response) => {
-                console.log(response.data)
-                //localStorage.setItem("isLoggedIn", false);
-                localStorage.clear(); 
-                    this.props.signout();
-            })
+        axios.get('https://yummipizzalaravel.herokuapp.com/api/auth/logout', this.config).then((response) => {
+            console.log(response.data)
+            //localStorage.setItem("isLoggedIn", false);
+            localStorage.clear();
+            this.props.signout();
+        })
     }
-    render() { 
-        localStorage.clear();     
+    render() {
+        localStorage.clear();
         return <Redirect to="/" />
     }
 

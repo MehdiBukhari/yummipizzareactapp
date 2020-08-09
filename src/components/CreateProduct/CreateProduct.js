@@ -1,9 +1,12 @@
 import React, { Component } from "react";
+import fs from "fs";
 import { Button, FormGroup, Label, Input } from "reactstrap";
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
-
-export default class CreateProduct extends Component {
+import { connect } from "react-redux";
+import "./CreateProduct.css";
+var FormData = require('form-data');
+class CreateProduct extends Component {
     userdata;
     config
     constructor(props) {
@@ -15,38 +18,57 @@ export default class CreateProduct extends Component {
         this.state = {
             ProData: {
                 proname: "",
-                descrpation:"",
-                price:"",
-                menuitemnid:"",
-                ProductPhoto:"",
+                descrpation: "",
+                price: "",
+                menuitemnid: "",
                 isLoading: "",
+                ProductPhoto: "",
             },
             msg: "",
             redirect: false,
+
         };
     }
 
     onChangehandler = (e, key) => {
         const { ProData } = this.state;
-        ProData[e.target.name] = e.target.value;
-        this.setState({ ProData });
+        if (e.target.files) {
+            ProData[e.target.name] = e.target.files[0];
+            this.setState({ ProData });
+        } else {
+            ProData[e.target.name] = e.target.value;
+            this.setState({ ProData });
+        }
+        console.log(ProData)
     };
+
     onSubmitHandler = (e) => {
         if (this.state.ProData.name === "") {
             alert('All Fileds are Requried');
         } else {
             e.preventDefault();
             this.setState({ isLoading: true });
+            var data = new FormData();
+            data.append('proname', this.state.ProData.proname);
+            data.append('descrpation', this.state.ProData.descrpation);
+            data.append('price', this.state.ProData.price);
+            data.append('menuitemnid', this.state.ProData.menuitemnid);
+            data.append('ProductPhoto', this.state.ProData.ProductPhoto);
+
             axios
-                .post("http://localhost:8000/api/admin/food/create", this.state.ProData, this.config)
+                .post("https://yummipizzalaravel.herokuapp.com/api/admin/food/create", data, this.config)
                 .then((response) => {
                     console.log(response);
                     this.setState({ isLoading: false });
-                    if (response.data.message === 'Successfully Menu Type Created') {
+                    if (response.data.message === 'Successfully Product Created') {
                         this.setState({
                             msg: response.data.message,
                             ProData: {
-                                name: "",
+                                proname: "",
+                                descrpation: "",
+                                price: "",
+                                menuitemnid: "",
+                                ProductPhoto: ""
                             },
                         });
                         setTimeout(() => {
@@ -61,7 +83,16 @@ export default class CreateProduct extends Component {
     };
     render() {
         const isLoading = this.state.isLoading;
-
+        let menuitems = this.props.menuitems.length ? (
+            this.props.menuitems.map(item => {
+                return (
+                    <option key={item.id} value={item.id}>{item.name}</option>
+                )
+            })
+        ) :
+            (
+                ""
+            )
         const login = localStorage.getItem("isLoggedIn");
         if (!login) {
             return <Redirect to="/" />;
@@ -82,12 +113,12 @@ export default class CreateProduct extends Component {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Label for="detail">Product Deatil</Label>
+                        <Label for="descrpation">Product Deatil</Label>
                         <Input
                             type="text"
-                            name="detail"
+                            name="descrpation"
                             placeholder="Enter Product detail"
-                            value={this.state.ProData.detail}
+                            value={this.state.ProData.descrpation}
                             onChange={this.onChangehandler}
                             required={true}
                         />
@@ -105,23 +136,28 @@ export default class CreateProduct extends Component {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Label for="menuname">Menu</Label>
+                        <Label for="menuname">Menu type</Label>
                         <Input
-                            type="text"
-                            name="menuname"
+                            type="select"
+                            name="menuitemnid"
                             placeholder="Choese Menu Type"
-                            value={this.state.ProData.menuname}
+                            value={this.state.ProData.menuitemnid}
                             onChange={this.onChangehandler}
                             required={true}
-                        />
+                        >
+                            <option value="">Choose Menu</option>
+                            {menuitems}
+                        </Input>
                     </FormGroup>
+                    <br></br>
                     <FormGroup>
-                        <Label for="proimg">Product Photo</Label>
+                        <Label for="ProductPhoto">Product Photo</Label>
+                        <br></br>
                         <Input
                             type="file"
-                            name="proimg"
+                            name="ProductPhoto"
                             placeholder="Choese Image of Food Item"
-                            value={this.state.ProData.proimg}
+                            // value={this.state.ProData.ProductPhoto}
                             onChange={this.onChangehandler}
                             required={true}
                         />
@@ -150,3 +186,11 @@ export default class CreateProduct extends Component {
         );
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        menuitems: state.menuitems
+    }
+}
+
+
+export default connect(mapStateToProps)(CreateProduct)

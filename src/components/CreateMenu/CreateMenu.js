@@ -34,7 +34,7 @@ export default class CreateMenu extends Component {
             e.preventDefault();
             this.setState({ isLoading: true });
             axios
-                .post("http://localhost:8000/api/admin/menu/create", this.state.MenuData, this.config)
+                .post("https://yummipizzalaravel.herokuapp.com/api/admin/menu/create", this.state.MenuData, this.config)
                 .then((response) => {
                     console.log(response);
                     this.setState({ isLoading: false });
@@ -49,7 +49,7 @@ export default class CreateMenu extends Component {
                             this.setState({ msg: "", redirect: true });
                         }, 2000);
                     }
-                   
+
 
                 });
         }
@@ -57,11 +57,12 @@ export default class CreateMenu extends Component {
     };
     render() {
         const isLoading = this.state.isLoading;
-        
+
         const login = localStorage.getItem("isLoggedIn");
         if (!login) {
             return <Redirect to="/" />;
         }
+
         return (
             <div className="row apni">
                 <h6>Create Menu </h6>
@@ -77,7 +78,6 @@ export default class CreateMenu extends Component {
                             required={true}
                         />
                     </FormGroup>
-
                     <p className="text-white">{this.state.msg}</p>
                     <Button
                         className="text-center mb-4"

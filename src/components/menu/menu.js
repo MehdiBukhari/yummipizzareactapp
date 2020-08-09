@@ -12,7 +12,7 @@ class Menu extends Component {
         //this.productlist();
     }
     // productlist() {
-    //     axios.post('http://localhost:8000/api/user/food', null).then((response) => {
+    //     axios.post('https://yummipizzalaravel.herokuapp.com/api/user/food', null).then((response) => {
     //         if (response.status === 200) {
     //             console.log(response.data)
     //             this.props.productlist(response.data)

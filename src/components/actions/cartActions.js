@@ -1,5 +1,5 @@
 
-import { ADD_TO_CART, REMOVE_ITEM, SUB_QUANTITY, ADD_QUANTITY, ADD_SHIPPING, Get_MENU_Item, ProductList, LOGGEDIN,SIGNOUT} from './action-types/cart-actions'
+import { ADD_TO_CART, REMOVE_ITEM, SUB_QUANTITY, ADD_QUANTITY, ADD_SHIPPING, Get_MENU_Item, EMPTYCART, ProductList, LOGGEDIN,SIGNOUT} from './action-types/cart-actions'
 
 //add cart action
 export const addToCart= (id)=>{
@@ -56,5 +56,12 @@ export const login =()=>{
 export const sigout=()=>{
     return{
         type:SIGNOUT
+    }
+}
+
+//EMPTYCART
+export const makecartempty=()=>{
+    return{
+        type: EMPTYCART
     }
 }

@@ -30,7 +30,7 @@ class Signin extends Component {
     onSignInHandler = () => {
         this.setState({ isLoading: true });
         axios
-            .post("http://localhost:8000/api/auth/login", {
+            .post("https://yummipizzalaravel.herokuapp.com/api/auth/login", {
                 email: this.state.email,
                 password: this.state.password,
             })
@@ -122,11 +122,11 @@ class Signin extends Component {
             </div>
         );
     }
-    
+
 }
 const mapDispatchToProps = (dispatch) => {
     return {
         login: () => { dispatch(login()) }
     }
 }
-export default connect(null,mapDispatchToProps)(Signin);
+export default connect(null, mapDispatchToProps)(Signin);

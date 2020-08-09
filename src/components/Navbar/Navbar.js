@@ -11,8 +11,8 @@ class Navbar extends Component {
     constructor(props) {
         super(props)
         this.state = { menus: [] }
-        this.userdata = (localStorage.getItem('userData'))?JSON.parse(localStorage.getItem('userData')):null;
-        this.userscope=this.userdata!=null?this.userdata.scope:"/";
+        this.userdata = (localStorage.getItem('userData')) ? JSON.parse(localStorage.getItem('userData')) : null;
+        this.userscope = this.userdata != null ? this.userdata.scope : "/";
     }
     componentDidMount() {
         this.menulist();
@@ -21,7 +21,7 @@ class Navbar extends Component {
 
     };
     menulist() {
-        axios.post('http://localhost:8000/api/admin/menuitems', null).then((response) => {
+        axios.post('https://yummipizzalaravel.herokuapp.com/api/admin/menuitems', null).then((response) => {
             if (response.status === 200) {
                 this.props.itemsQuantity(response.data)
             }
@@ -42,8 +42,8 @@ class Navbar extends Component {
         return (
             <nav className="nav-wrapper apnibar">
                 <div className="container">
-                    <Link to="/" className="brand-logo">Yummi Pizza</Link>
-                    <ul className="right">
+                    {/* <Link to="/" className="brand-logo">Yummi Pizza</Link> */}
+                    <ul>
                         <li><Link to="/">Home</Link></li>
                         <li><Link className="dropdown-trigger" to="#!" data-target="dropdown1">Our Unique Menu</Link><i className="material-icons">arrow_drop_down</i></li>
                         <ul id="dropdown1" className="dropdown-content" >
@@ -51,8 +51,11 @@ class Navbar extends Component {
                         </ul>
                         <li><Link to="/cart">Your cart have {this.props.items.length} kinds of products </Link></li>
                         {this.props.loggedin ? (
-                            <li><Link to="/logout">Logout</Link></li>,
-                            <li><Link to={this.userscope ==="user" ? "userdashboard":"/dashboard"}>My Dashboard</Link></li>
+                            <div>
+
+                                <li><Link to={this.userscope === "user" ? "userdashboard" : "/dashboard"}>My Dashboard</Link></li>
+                                <li><Link to="/logout">Logout</Link></li>
+                            </div>
 
                         ) : (
                                 <li><Link to="/sign-in">Sign-in</Link></li>

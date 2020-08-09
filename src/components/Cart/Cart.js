@@ -25,7 +25,7 @@ class Cart extends Component {
                     return (
                         <li className="collection-item avatar" key={item.id}>
                             <div className="item-img">
-                                <img src={'http://localhost:8000/' + item.imagepath} alt={item.proname} />
+                                <img src={'https://yummipizzalaravel.herokuapp.com/' + item.imagepath} alt={item.proname} />
                             </div>
                             <div className="item-desc">
                                 <span className="title">{item.proname}</span>

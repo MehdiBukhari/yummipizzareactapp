@@ -9,3 +9,4 @@ export const Get_MENU_Item = 'Get_MENU_Item';
 export const ProductList ='ProductList;'
 export const LOGGEDIN ='LOGGEDIN';
 export const SIGNOUT = 'SIGNOUT';
+export const EMPTYCART = 'EMPTYCART';

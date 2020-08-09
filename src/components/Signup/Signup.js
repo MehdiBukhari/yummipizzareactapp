@@ -3,8 +3,9 @@ import { Button, FormGroup, Label, Input } from "reactstrap";
 import axios from "axios";
 import "./Signup.css";
 import { Link, Redirect } from "react-router-dom";
-
-export default class Signup extends Component {
+import { connect } from "react-redux";
+import { login } from "../actions/cartActions";
+class Signup extends Component {
     userData;
     constructor(props) {
         super(props);
@@ -34,11 +35,12 @@ export default class Signup extends Component {
             e.preventDefault();
             this.setState({ isLoading: true });
             axios
-                .post("http://localhost:8000/api/auth/signup", this.state.signupData)
+                .post("https://yummipizzalaravel.herokuapp.com/api/auth/signup", this.state.signupData)
                 .then((response) => {
                     console.log(response);
                     this.setState({ isLoading: false });
                     if (response.data.message === 'authorized') {
+                        this.props.login();
                         this.setState({
                             msg: response.data.message,
                             signupData: {
@@ -141,3 +143,9 @@ export default class Signup extends Component {
         );
     }
 }
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: () => { dispatch(login()) }
+    }
+}
+export default connect(null, mapDispatchToProps)(Signup);

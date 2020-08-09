@@ -8,11 +8,11 @@ class Home extends Component {
         this.props.addToCart(id);
         //console.log(this.props.items.length)
     }
-    componentDidMount(){
-            this.productlist();
+    componentDidMount() {
+        this.productlist();
     }
-    productlist(){
-        axios.post('http://localhost:8000/api/user/food', null).then((response) => {
+    productlist() {
+        axios.post('https://yummipizzalaravel.herokuapp.com/api/user/food', null).then((response) => {
             if (response.status === 200) {
                 console.log(response.data)
                 this.props.productlist(response.data)
@@ -22,9 +22,10 @@ class Home extends Component {
     render() {
         let itemList = this.props.items.map(item => {
             return (
+
                 <div className="card" key={item.id}>
                     <div className="card-image">
-                        <img src={'http://localhost:8000/'+item.imagepath} alt={item.proname} />
+                        <img src={'https://yummipizzalaravel.herokuapp.com/' + item.imagepath} alt={item.proname} />
                         <span className="card-title">{item.proname}</span>
                         <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={() => { this.handleClick(item.id) }}><i className="material-icons">add</i></span>
                     </div>
@@ -40,7 +41,7 @@ class Home extends Component {
 
         return (
             <div className="container">
-                {/* <h4 className="center">Best for your appitite</h4> */}
+                <h4 className="">Yummi Pizza</h4>
                 <div className="box">
                     {itemList}
                 </div>
@@ -57,7 +58,7 @@ const mapDispatchToProps = (dispatch) => {
 
     return {
         addToCart: (id) => { dispatch(addToCart(id)) },
-        productlist:(products)=>{dispatch(productlist(products))}
+        productlist: (products) => { dispatch(productlist(products)) }
     }
 }
 

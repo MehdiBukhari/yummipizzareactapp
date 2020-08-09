@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_ITEM, SUB_QUANTITY, ADD_QUANTITY, ADD_SHIPPING, Get_MENU_Item, ProductList, LOGGEDIN ,SIGNOUT} from '../actions/action-types/cart-actions'
+import { ADD_TO_CART, REMOVE_ITEM, SUB_QUANTITY, EMPTYCART,ADD_QUANTITY, ADD_SHIPPING, Get_MENU_Item, ProductList, LOGGEDIN ,SIGNOUT} from '../actions/action-types/cart-actions'
 
 
 const initState = {
@@ -117,7 +117,13 @@ const cartReducer = (state = initState, action) => {
             loggedin: false
         }
     }
-
+    if (action.type === EMPTYCART){
+        return {
+            ...state,
+            addedItems: [],
+            total:0
+        }
+    }
     else {
         return state
     }
