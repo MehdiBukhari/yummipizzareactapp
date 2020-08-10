@@ -169,7 +169,7 @@ class CreateProduct extends Component {
                         color="success"
                         onClick={this.onSubmitHandler}
                     >
-                        Create Menu
+                        Create Product
             {isLoading ? (
                             <span
                                 className="spinner-border spinner-border-sm ml-5"
