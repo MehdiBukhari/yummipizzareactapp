@@ -40,10 +40,7 @@ class Recipe extends Component {
     };
 
     onSubmitHandler = (e) => {
-        if (!this.props.loggedin) {
-            alert("you are logged in please login first or Create Account")
-        }
-        else if (this.state.OrdData.adress === "" || this.props.addedItems === []) {
+         if (this.state.OrdData.adress === "" || this.props.addedItems === []) {
             alert('Please Select Some Products to Ship and Enter Your Shipping Adress');
         } else {
             e.preventDefault();
