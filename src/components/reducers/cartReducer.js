@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_ITEM, SUB_QUANTITY, EMPTYCART,ADD_QUANTITY, ADD_SHIPPING, Get_MENU_Item, ProductList, LOGGEDIN ,SIGNOUT} from '../actions/action-types/cart-actions'
+import { ADD_TO_CART, REMOVE_ITEM, SUB_QUANTITY, EMPTYCART, ADD_QUANTITY, ADD_SHIPPING, Get_MENU_Item, ProductList, LOGGEDIN, SIGNOUT, EURORATE, EUROTOTAL } from '../actions/action-types/cart-actions'
 
 
 const initState = {
@@ -6,7 +6,9 @@ const initState = {
     addedItems: [],
     total: 0,
     menuitems: [],
-    loggedin: (localStorage.getItem("isLoggedIn"))?true:false
+    erurorate: 0,
+    eurototal: 0,
+    loggedin: (localStorage.getItem("isLoggedIn")) ? true : false
 }
 
 const cartReducer = (state = initState, action) => {
@@ -33,7 +35,7 @@ const cartReducer = (state = initState, action) => {
                 addedItems: [...state.addedItems, addedItem],
                 total: newTotal
             }
-            
+
         }
     }
     if (action.type === REMOVE_ITEM) {
@@ -91,7 +93,8 @@ const cartReducer = (state = initState, action) => {
     if (action.type === 'SUB_SHIPPING') {
         return {
             ...state,
-            total: state.total - 6
+            total: state.total - 6,
+
         }
     }
     if (action.type === Get_MENU_Item) {
@@ -105,10 +108,10 @@ const cartReducer = (state = initState, action) => {
             ...state,
             items: action.produts
         }
-    }if(action.type=== LOGGEDIN){
-        return{
+    } if (action.type === LOGGEDIN) {
+        return {
             ...state,
-            loggedin:true
+            loggedin: true
         }
     }
     if (action.type === SIGNOUT) {
@@ -117,11 +120,24 @@ const cartReducer = (state = initState, action) => {
             loggedin: false
         }
     }
-    if (action.type === EMPTYCART){
+    if (action.type === EMPTYCART) {
         return {
             ...state,
             addedItems: [],
-            total:0
+            total: 0,
+            eurototal: 0
+        }
+    }
+    if (action.type === EURORATE) {
+        return {
+            ...state,
+            erurorate: action.rate
+        }
+    }
+    if (action.type === EUROTOTAL) {
+        return {
+            ...state,
+            eurototal: state.total * state.erurorate
         }
     }
     else {

@@ -40,7 +40,7 @@ class Recipe extends Component {
     };
 
     onSubmitHandler = (e) => {
-         if (this.state.OrdData.adress === "" || this.props.addedItems === []) {
+        if (this.state.OrdData.adress === "" || this.props.addedItems === []) {
             alert('Please Select Some Products to Ship and Enter Your Shipping Adress');
         } else {
             e.preventDefault();
@@ -114,7 +114,8 @@ class Recipe extends Component {
                     <li className="collection-item">
                         <label>
                             <input type="checkbox" ref="shipping" onChange={this.handleChecked} />
-                            <span>Shipping(+6$)</span>
+                            <span>Shipping(+6$) Shipping In Euro (+ € {6 * parseFloat(this.props.erurorate).toFixed(2)} </span>
+                            <span>)</span>
                         </label>
                     </li>
                     <li className="collection-item">
@@ -144,6 +145,7 @@ class Recipe extends Component {
                         </FormGroup>
                     </li>
                     <li className="collection-item"><b>Total: {this.props.total} $</b></li>
+                    <li className="collection-item"><b>Total in Euro: € {this.props.total * parseFloat(this.props.erurorate).toFixed(2)}</b></li>
                 </div>
                 <p className="text-white">{this.state.msg}</p>
                 <div className="checkout">
@@ -159,6 +161,7 @@ const mapStateToProps = (state) => {
         addedItems: state.addedItems,
         total: state.total,
         loggedin: state.loggedin,
+        erurorate: state.erurorate
     }
 }
 

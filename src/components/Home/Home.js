@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { addToCart, productlist } from '../actions/cartActions'
+import { addToCart, productlist,seteuroRate } from '../actions/cartActions'
 import axios from "axios";
 class Home extends Component {
 
@@ -10,12 +10,23 @@ class Home extends Component {
     }
     componentDidMount() {
         this.productlist();
+        this.getEuroRate();
     }
     productlist() {
         axios.post('https://yummipizzalaravel.herokuapp.com/api/user/food', null).then((response) => {
             if (response.status === 200) {
                 console.log(response.data)
                 this.props.productlist(response.data)
+            }
+        })
+    }
+    //get euro rate
+    getEuroRate = () => {
+        axios.get('https://api.exchangeratesapi.io/latest?base=USD', null).then((response) => {
+            if (response.status === 200) {
+                //console.log(response.data.rates.EUR)
+                this.props.seteuroRate(response.data.rates.EUR)
+                console.log(this.props.erurorate)
             }
         })
     }
@@ -33,6 +44,7 @@ class Home extends Component {
                     <div className="card-content">
                         <p>{item.descrpation}</p>
                         <p><b>Price: {item.price}$</b></p>
+                        <p><b>Price In Euro: €{item.price * parseFloat(this.props.erurorate).toFixed(2)}</b></p>
                     </div>
                 </div>
 
@@ -51,14 +63,16 @@ class Home extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        items: state.items
+        items: state.items,
+        erurorate: state.erurorate
     }
 }
 const mapDispatchToProps = (dispatch) => {
 
     return {
         addToCart: (id) => { dispatch(addToCart(id)) },
-        productlist: (products) => { dispatch(productlist(products)) }
+        productlist: (products) => { dispatch(productlist(products)) },
+        seteuroRate: (rate) => { dispatch(seteuroRate(rate)) }
     }
 }
 

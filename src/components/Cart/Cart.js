@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { removeItem, addQuantity, subtractQuantity } from '../actions/cartActions'
 import Recipe from '../SubmitOrders/Recipe'
 class Cart extends Component {
-
+    
     //to remove the item completely
     handleRemove = (id) => {
         this.props.removeItem(id);
@@ -17,6 +17,7 @@ class Cart extends Component {
     handleSubtractQuantity = (id) => {
         this.props.subtractQuantity(id);
     }
+  
     render() {
 
         let addedItems = this.props.items.length ?
@@ -29,8 +30,9 @@ class Cart extends Component {
                             </div>
                             <div className="item-desc">
                                 <span className="title">{item.proname}</span>
-                                <p>{item.desc}</p>
+                                <p>{item.descrpation}</p>
                                 <p><b>Price: {item.price}$</b></p>
+                                <p><b>Price In Euro: €{item.price*parseFloat(this.props.erurorate).toFixed(2)}</b></p>
                                 <p>
                                     <b>Quantity: {item.quantity}</b>
                                 </p>
@@ -69,6 +71,7 @@ const mapStateToProps = (state) => {
     return {
         items: state.addedItems,
         //addedItems: state.addedItems
+        erurorate: state.erurorate
     }
 }
 const mapDispatchToProps = (dispatch) => {
